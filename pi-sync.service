@@ -1,0 +1,12 @@
+[Unit]
+Description=Pi Agent Auto-Sync
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash ~/.pi/sync.sh
+WorkingDirectory=~
+
+[Install]
+WantedBy=default.target

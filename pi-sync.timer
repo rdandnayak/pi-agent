@@ -1,0 +1,10 @@
+[Unit]
+Description=Pi Agent Sync Timer
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=15min
+Unit=pi-sync.service
+
+[Install]
+WantedBy=timers.target
