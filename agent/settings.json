@@ -4,7 +4,15 @@
   "defaultProvider": "opencode-go",
   "defaultModel": "mimo-v2.5",
   "packages": [
-    "npm:pi-web-access"
+    {
+      "source": "npm:pi-web-access",
+      "extensions": [
+        "+index.ts"
+      ]
+    }
   ],
-  "defaultThinkingLevel": "minimal"
+  "defaultThinkingLevel": "minimal",
+  "extensions": [
+    "+extensions/herdr-agent-state.ts"
+  ]
 }
