@@ -1,0 +1,15 @@
+# Sensitive files
+agent/auth.json
+agent/trust.json
+
+# Session logs (contain conversation history)
+agent/sessions/
+
+# Binary
+agent/bin/
+
+# Node modules (reinstallable)
+agent/npm/node_modules/
+
+# Large/generated files
+*.jsonl
