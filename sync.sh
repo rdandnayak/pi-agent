@@ -33,6 +33,19 @@ if [ "$STASHED" = true ]; then
     git stash pop --quiet 2>/dev/null || true
 fi
 
+# Reconcile packages from settings.json
+SETTINGS_FILE="$REPO_DIR/agent/settings.json"
+if [ -f "$SETTINGS_FILE" ] && command -v pi &>/dev/null; then
+    PACKAGES=$(grep -o '"npm:[^"]*"' "$SETTINGS_FILE" 2>/dev/null | tr -d '"' || true)
+    for pkg in $PACKAGES; do
+        PKG_DIR="$REPO_DIR/agent/npm/node_modules/$(echo "$pkg" | sed 's|^npm:||')"
+        if [ ! -d "$PKG_DIR" ]; then
+            log "Installing missing package: $pkg"
+            pi install "$pkg" 2>> "$LOG_FILE" || log "WARN: Failed to install $pkg"
+        fi
+    done
+fi
+
 # Stage all changes (respects .gitignore)
 git add -A
 
