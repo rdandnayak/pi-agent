@@ -13,11 +13,24 @@ log() {
 
 cd "$REPO_DIR" || { log "ERROR: Cannot cd to $REPO_DIR"; exit 1; }
 
+# Stash any local changes (including log writes from previous runs)
+STASHED=false
+if ! git diff --quiet || ! git diff --cached --quiet; then
+    git stash push -m "auto-sync-stash" --quiet
+    STASHED=true
+fi
+
 # Pull with rebase to stay linear
 if ! git pull --rebase origin main 2>> "$LOG_FILE"; then
     log "ERROR: Pull failed (merge conflict?). Aborting rebase."
     git rebase --abort 2>/dev/null
+    if [ "$STASHED" = true ]; then git stash pop --quiet 2>/dev/null; fi
     exit 1
+fi
+
+# Restore stashed changes
+if [ "$STASHED" = true ]; then
+    git stash pop --quiet 2>/dev/null || true
 fi
 
 # Stage all changes (respects .gitignore)
