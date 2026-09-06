@@ -13,3 +13,8 @@ agent/npm/node_modules/
 
 # Large/generated files
 *.jsonl
+
+# Sync logs
+.sync.log
+.sync-stdout.log
+.sync-stderr.log
