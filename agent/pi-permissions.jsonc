@@ -91,6 +91,47 @@
     "type */.env*": "deny",
     "type * .env*": "deny",
 
+    // EXTERNAL BASH WRITES: deny redirects/writes to absolute paths that are
+    // never inside any project (system/temp dirs). Bash matching is string-only
+    // (no cwd/path resolution), so these target clearly-external locations.
+    "* > /tmp/*": "deny",
+    "* >> /tmp/*": "deny",
+    "* > /etc/*": "deny",
+    "* >> /etc/*": "deny",
+    "* > /var/*": "deny",
+    "* >> /var/*": "deny",
+    "* > /usr/*": "deny",
+    "* >> /usr/*": "deny",
+    "* > /root/*": "deny",
+    "* >> /root/*": "deny",
+    "* > /opt/*": "deny",
+    "* >> /opt/*": "deny",
+    "* > /mnt/*": "deny",
+    "* >> /mnt/*": "deny",
+    "* > /bin/*": "deny",
+    "* > /sbin/*": "deny",
+    "* > /lib/*": "deny",
+    "* > /boot/*": "deny",
+    "* > /dev/*": "deny",
+    "touch /tmp/*": "deny",
+    "mkdir /tmp/*": "deny",
+    "mkdir -p /tmp/*": "deny",
+    "cp * /tmp/*": "deny",
+    "mv * /tmp/*": "deny",
+    "tee /tmp/*": "deny",
+    "rm /tmp/*": "deny",
+    "rmdir /tmp/*": "deny",
+    "touch /etc/*": "deny",
+    "touch /var/*": "deny",
+    "touch /usr/*": "deny",
+    "touch /root/*": "deny",
+    "touch /opt/*": "deny",
+    "tee /etc/*": "deny",
+    "tee /var/*": "deny",
+    "tee /usr/*": "deny",
+    "tee /root/*": "deny",
+    "tee /opt/*": "deny",
+
     // DANGEROUS: hard block (cannot be overridden even by allow).
     "rm -rf *": "deny",
     "sudo *": "deny",
@@ -105,6 +146,8 @@
   },
   "special": {
     "doom_loop": "deny",
-    "external_directory": "ask"
+    // Allow reads outside the project; writes/edits are still gated by the
+    // tools layer (write:ask / edit:ask) which applies after this fall-through.
+    "external_directory": "allow"
   }
 }
