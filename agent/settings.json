@@ -13,6 +13,7 @@
   ],
   "defaultThinkingLevel": "minimal",
   "extensions": [
-    "+extensions/herdr-agent-state.ts"
+    "+extensions/herdr-agent-state.ts",
+    "+extensions/azure-cli-approval.ts"
   ]
 }
