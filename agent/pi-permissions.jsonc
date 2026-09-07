@@ -31,9 +31,68 @@
     "edit:*.env.*": "deny"
   },
   "bash": {
-    // AZURE CLI: always require approval.
-    "az *": "ask",
-    "az": "ask",
+    // AZURE CLI: reads pass silently, writes require approval.
+    // Catch-all: any az invocation asks first. `*az` (not just `az *`) is used
+    // so compound chains like `cd x && az ...` / `VAR=x; az ...` are also
+    // caught, which the command-anchored "az *" rule missed. Rule order is
+    // last-match-wins, so the read-only ALLOW rules below must come AFTER this
+    // broad ASK catch-all.
+    "*az *": "ask",
+    "*az": "ask",
+
+    // Read-only az commands run silently (these override the catch-all above).
+    "*az account list*": "allow",
+    "*az account show*": "allow",
+    "*az account get-access-token*": "allow",
+    "*az group list*": "allow",
+    "*az group show*": "allow",
+    "*az group exists*": "allow",
+    "*az resource list*": "allow",
+    "*az resource show*": "allow",
+    "*az resource link list*": "allow",
+    "*az storage * list*": "allow",
+    "*az storage * show*": "allow",
+    "*az vm list*": "allow",
+    "*az vm show*": "allow",
+    "*az vm image list*": "allow",
+    "*az webapp list*": "allow",
+    "*az webapp show*": "allow",
+    "*az functionapp list*": "allow",
+    "*az functionapp show*": "allow",
+    "*az role assignment list*": "allow",
+    "*az role assignment show*": "allow",
+    "*az role definition list*": "allow",
+    "*az role definition show*": "allow",
+    "*az keyvault list*": "allow",
+    "*az keyvault show*": "allow",
+    "*az keyvault secret list*": "allow",
+    "*az keyvault secret show*": "allow",
+    "*az network * list*": "allow",
+    "*az network * show*": "allow",
+    // az rest is method-dependent: GET is read-only, other methods (POST,
+    // PUT, DELETE, PATCH...) are mutations and stay on the ask catch-all.
+    "*az rest *--method get*": "allow",
+    "*az rest *--method GET*": "allow",
+    // Azure DevOps reads.
+    "*az devops * list*": "allow",
+    "*az devops * show*": "allow",
+    "*az pipelines * list*": "allow",
+    "*az pipelines * show*": "allow",
+    "*az repos * list*": "allow",
+    "*az repos * show*": "allow",
+    "*az repos list*": "allow",
+    "*az repos show*": "allow",
+    "*az boards * list*": "allow",
+    "*az boards * show*": "allow",
+    "*az boards list*": "allow",
+    "*az boards show*": "allow",
+    "*az artifact * list*": "allow",
+    "*az artifact * show*": "allow",
+    "*az extension list*": "allow",
+    "*az extension show*": "allow",
+    "*az config list*": "allow",
+    "*az config show*": "allow",
+    "*az version*": "allow",
 
     // Safe, read-only / non-destructive commands run silently.
     "git status": "allow",
