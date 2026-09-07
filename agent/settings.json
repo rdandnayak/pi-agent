@@ -9,11 +9,11 @@
       "extensions": [
         "+index.ts"
       ]
-    }
+    },
+    "npm:pi-permission-system"
   ],
   "defaultThinkingLevel": "minimal",
   "extensions": [
-    "+extensions/herdr-agent-state.ts",
-    "+extensions/azure-cli-approval.ts"
+    "+extensions/herdr-agent-state.ts"
   ]
 }

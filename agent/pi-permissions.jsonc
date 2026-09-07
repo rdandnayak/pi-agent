@@ -1,0 +1,68 @@
+{
+  // Global permission policy for pi-permission-system.
+  // Smart mode: safe commands run silently, sensitive ones prompt (ask),
+  // and dangerous ones are hard-blocked (deny). Last matching rule wins.
+  "defaultPolicy": {
+    "tools": "ask",
+    "bash": "ask",
+    "mcp": "ask",
+    "skills": "ask",
+    "special": "ask"
+  },
+  "tools": {
+    // File reads/searches are safe - allow silently.
+    "read": "allow",
+    "grep": "allow",
+    "find": "allow",
+    "ls": "allow",
+    // Writes/edits prompt for confirmation.
+    "write": "ask",
+    "edit": "ask"
+  },
+  "bash": {
+    // AZURE CLI: always require approval.
+    "az *": "ask",
+    "az": "ask",
+
+    // Safe, read-only / non-destructive commands run silently.
+    "git status": "allow",
+    "git log *": "allow",
+    "git diff *": "allow",
+    "git branch": "allow",
+    "ls *": "allow",
+    "cat *": "allow",
+    "head *": "allow",
+    "tail *": "allow",
+    "wc *": "allow",
+    "pwd": "allow",
+    "whoami": "allow",
+    "date": "allow",
+    "npm run *": "allow",
+    "npm test": "allow",
+
+    // Git mutations prompt.
+    "git add *": "ask",
+    "git commit *": "ask",
+    "git push *": "ask",
+    "git pull *": "ask",
+    "git checkout *": "ask",
+    "git merge *": "ask",
+    "git reset *": "ask",
+
+    // DANGEROUS: hard block (cannot be overridden even by allow).
+    "rm -rf *": "deny",
+    "sudo *": "deny",
+    "curl * | sh": "deny",
+    "curl * | bash": "deny",
+    "dd if=*": "deny",
+    "git push --force*": "deny",
+    "git push -f*": "deny"
+  },
+  "skills": {
+    "*": "ask"
+  },
+  "special": {
+    "doom_loop": "deny",
+    "external_directory": "ask"
+  }
+}
