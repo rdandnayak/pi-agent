@@ -3,21 +3,32 @@
   // Smart mode: safe commands run silently, sensitive ones prompt (ask),
   // and dangerous ones are hard-blocked (deny). Last matching rule wins.
   "defaultPolicy": {
-    "tools": "ask",
-    "bash": "ask",
+    "tools": "allow",
+    "bash": "allow",
     "mcp": "ask",
     "skills": "ask",
     "special": "ask"
   },
   "tools": {
-    // File reads/searches are safe - allow silently.
+    // Reads/searches are safe - allow silently (this is also the default now).
     "read": "allow",
     "grep": "allow",
     "find": "allow",
     "ls": "allow",
     // Writes/edits prompt for confirmation.
     "write": "ask",
-    "edit": "ask"
+    "edit": "ask",
+
+    // SECRETS: .env files are never read/written/edited by the agent.
+    // `*` matches across path separators, so these cover any .env anywhere.
+    "read:*.env": "deny",
+    "read:*.env.*": "deny",
+    "grep:*.env": "deny",
+    "grep:*.env.*": "deny",
+    "write:*.env": "deny",
+    "write:*.env.*": "deny",
+    "edit:*.env": "deny",
+    "edit:*.env.*": "deny"
   },
   "bash": {
     // AZURE CLI: always require approval.
@@ -48,6 +59,37 @@
     "git checkout *": "ask",
     "git merge *": "ask",
     "git reset *": "ask",
+
+    // SECRETS: reading .env through common shell tools is blocked.
+    // Covers cwd-relative (.env), nested (dir/.env), and flag-prefixed
+    // (tail -n 5 .env) invocations.
+    "cat .env*": "deny",
+    "cat */.env*": "deny",
+    "cat * .env*": "deny",
+    "less .env*": "deny",
+    "less */.env*": "deny",
+    "less * .env*": "deny",
+    "tail .env*": "deny",
+    "tail */.env*": "deny",
+    "tail * .env*": "deny",
+    "head .env*": "deny",
+    "head */.env*": "deny",
+    "head * .env*": "deny",
+    "sed .env*": "deny",
+    "sed */.env*": "deny",
+    "sed * .env*": "deny",
+    "awk .env*": "deny",
+    "awk */.env*": "deny",
+    "awk * .env*": "deny",
+    "grep .env*": "deny",
+    "grep */.env*": "deny",
+    "grep * .env*": "deny",
+    "more .env*": "deny",
+    "more */.env*": "deny",
+    "more * .env*": "deny",
+    "type .env*": "deny",
+    "type */.env*": "deny",
+    "type * .env*": "deny",
 
     // DANGEROUS: hard block (cannot be overridden even by allow).
     "rm -rf *": "deny",
