@@ -1,0 +1,22 @@
+{
+  "providers": {
+    "soroco": {
+      "baseUrl": "https://chat.soroco.com/api/v1",
+      "api": "openai-completions",
+      "apiKey": "$HERMES_CUSTOM_CHAT_SOROCO_COM_API_KEY",
+      "compat": {
+        "supportsDeveloperRole": false
+      },
+      "models": [
+        {
+          "id": "minimax-local",
+          "name": "MiniMax Local",
+          "reasoning": false,
+          "input": ["text"],
+          "contextWindow": 161000,
+          "maxTokens": 16384
+        }
+      ]
+    }
+  }
+}
