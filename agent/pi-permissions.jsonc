@@ -91,11 +91,10 @@
     "type */.env*": "deny",
     "type * .env*": "deny",
 
-    // EXTERNAL BASH WRITES: deny redirects/writes to absolute paths that are
-    // never inside any project (system/temp dirs). Bash matching is string-only
-    // (no cwd/path resolution), so these target clearly-external locations.
-    "* > /tmp/*": "deny",
-    "* >> /tmp/*": "deny",
+    // EXTERNAL BASH WRITES: deny redirects/writes to absolute system paths that
+    // are never inside any project. /tmp is deliberately NOT restricted - it is
+    // the standard scratch location. Bash matching is string-only (no cwd/path
+    // resolution), so these target clearly-external system locations.
     "* > /etc/*": "deny",
     "* >> /etc/*": "deny",
     "* > /var/*": "deny",
@@ -113,14 +112,6 @@
     "* > /lib/*": "deny",
     "* > /boot/*": "deny",
     "* > /dev/*": "deny",
-    "touch /tmp/*": "deny",
-    "mkdir /tmp/*": "deny",
-    "mkdir -p /tmp/*": "deny",
-    "cp * /tmp/*": "deny",
-    "mv * /tmp/*": "deny",
-    "tee /tmp/*": "deny",
-    "rm /tmp/*": "deny",
-    "rmdir /tmp/*": "deny",
     "touch /etc/*": "deny",
     "touch /var/*": "deny",
     "touch /usr/*": "deny",
@@ -139,7 +130,29 @@
     "curl * | bash": "deny",
     "dd if=*": "deny",
     "git push --force*": "deny",
-    "git push -f*": "deny"
+    "git push -f*": "deny",
+
+    // Additional dangerous commands from best-practice references.
+    "wget * | sh": "deny",
+    "wget * | bash": "deny",
+    "find * -delete*": "deny",
+    "mkfs.*": "deny",
+    "chmod * 777*": "deny",
+    "chown -R *": "deny",
+    "docker system prune*": "deny",
+    "docker rm -f *": "deny",
+    "shutdown*": "deny",
+    "reboot*": "deny",
+    "halt*": "deny",
+    "poweroff*": "deny",
+    "git clean*": "deny",
+    "npm unpublish*": "deny",
+    "su -": "deny",
+    "su -l *": "deny",
+    "DROP TABLE *": "deny",
+    "TRUNCATE *": "deny",
+    "DELETE FROM *": "deny",
+    "git reset --hard*": "deny"
   },
   "skills": {
     "*": "ask"
