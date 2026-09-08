@@ -19,13 +19,6 @@
     "write": "ask",
     "edit": "ask",
 
-    // REPO WRITES: allow writes/edits anywhere inside this repository.
-    // `*` matches across path separators, so these cover all files/dirs
-    // under the repo. Placed BEFORE the .env denies below so that .env
-    // files (including any inside this repo) remain blocked.
-    "write:/home/rdandnayak/workspace/Scout-Client-Dashboard/*": "allow",
-    "edit:/home/rdandnayak/workspace/Scout-Client-Dashboard/*": "allow",
-
     // SECRETS: .env files are never read/written/edited by the agent.
     // `*` matches across path separators, so these cover any .env anywhere.
     "read:*.env": "deny",
