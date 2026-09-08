@@ -10,7 +10,8 @@
         "+index.ts"
       ]
     },
-    "npm:pi-permission-system"
+    "npm:pi-permission-system",
+    "npm:pi-cmux"
   ],
   "defaultThinkingLevel": "minimal",
   "extensions": [
